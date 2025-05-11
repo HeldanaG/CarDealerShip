@@ -10,6 +10,7 @@ public class Vehicle {
     private int odometer;
     private double price;
 
+    // This class represents one vehicle and its data in the dealership's inventory.
     public Vehicle(int vin, double price, String color, int odometer, String vehicleType, String make, String model, int year) {
         this.vin = vin;
         this.price = price;
