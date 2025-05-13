@@ -1,0 +1,9 @@
+---- Dealership Information ----
+Name | Address | Phone
+Heldana|1505 Elm Street|2143045870
+-----------------------------------------------------------------------------------
+
+---- Vehicle Inventory ----
+VIN      | Year   | Make       | Model        | Type         | Color      | Odometer | Price      
+-----------------------------------------------------------------------------------
+10110    | 215    | Camry      | Toyota       | Car          | Red        | 150000   | $9054.00   

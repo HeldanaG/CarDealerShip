@@ -11,16 +11,17 @@ public class Vehicle {
     private double price;
 
     // This class represents one vehicle and its data in the dealership's inventory.
-    public Vehicle(int vin, double price, String color, int odometer, String vehicleType, String make, String model, int year) {
+    public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
         this.vin = vin;
-        this.price = price;
-        this.color = color;
-        this.odometer = odometer;
-        this.vehicleType = vehicleType;
+        this.year = year;
         this.make = make;
         this.model = model;
-        this.year = year;
+        this.vehicleType = vehicleType;
+        this.color = color;
+        this.odometer = odometer;
+        this.price = price;
     }
+
 
     public int getVin() {
         return vin;
@@ -85,10 +86,11 @@ public class Vehicle {
     public void setYear(int year) {
         this.year = year;
     }
-    // Converts all fields into a single line of text
+
     @Override
     public String toString() {
-        return vin + " | " + year + " | " + make + " | " + model + " | " +
-                vehicleType + " | " + color + " | " + odometer + " | $" + price;
+        return String.format("%-8d | %-6d | %-10s | %-12s | %-12s | %-10s | %-8d | $%-10.2f",
+                vin, year, make, model, vehicleType, color, odometer, price);
     }
+
 }
