@@ -95,12 +95,15 @@ src/main/java/com/pluralsight/
 
 📍 Sale/Lease Processing
 
-Screenshot of: processSellOrLeaseVehicleRequest() interaction with buyer
+![image](https://github.com/user-attachments/assets/1f9fb851-43df-4318-97ca-fb8686eafdea)
+
+![image](https://github.com/user-attachments/assets/286672bd-c6da-4c90-8816-234b53ed38d1)
 
 📍 Receipt
 
-Screenshot of: Receipt printed inside ContractFileManager.saveContract() method
+![image](https://github.com/user-attachments/assets/cef5b1e1-7bd9-4066-b6b1-d8a237a15a15)
 
+![image](https://github.com/user-attachments/assets/d3bc85ae-3a89-41dc-bda8-deb10c479029)
 
 ## 🛠️ Technologies Used
 
@@ -152,5 +155,7 @@ Create or log in to your dealership and begin managing your inventory!
 ## 🙋‍♀️ Author
 
 Heldana Gebremariam
+
 Java Developer & System Designer
+
 05/23/2025
