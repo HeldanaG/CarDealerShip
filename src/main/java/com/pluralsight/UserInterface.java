@@ -32,9 +32,9 @@ public class UserInterface {
                                 " 6  -  Find vehicles by type                                                       \n" +
                                 " 7  -  List all vehicles                                                           \n" +
                                 " 8  -  Add a vehicle                                                               \n" +
-                                " 9  -  Remove a vehicle                                                           \n " +
-                                " 10 -  Purchase a Vehicle                                                         \n" +
-                                "99  -  Quit                                                                        \n" +
+                                " 9  -  Remove a vehicle                                                            \n" +
+                                " 10 -  Sell or Lease a Vehicle                                                     \n" +
+                                " 99  -  Quit                                                                        \n" +
                                 "-----------------------------------------------------------------------------------");
 
             int option = -1;
@@ -60,7 +60,7 @@ public class UserInterface {
                 case 7 -> processAllVehiclesRequest();
                 case 8 -> processAddVehicleRequest();
                 case 9 -> processRemoveVehicleRequest();
-                case 10 -> processPurchaseVehicleRequest();
+                case 10 -> processSellOrLeaseVehicleRequest();
                 case 99 -> {
                     System.out.println("Goodbye!");
                     menuRunning = false;
@@ -78,7 +78,7 @@ public class UserInterface {
         String response = askQuestion("Have you used the Vehicle Search & Management System before? (yes/no): ").toLowerCase();
 
         if (response.equals("yes")) {
-            fileName = askQuestion("Enter your dealership file name (e.g., inventory.csv): ");
+            fileName = askQuestion("Enter your dealership file name (e.g., Raddison.csv): ");
             File file = new File("src/main/resources/" + fileName);
 
             if (file.exists()) {
@@ -332,83 +332,63 @@ public class UserInterface {
             }
         }
     }
-    public static void processPurchaseVehicleRequest() {
-        boolean purchasing = true;
-        while (purchasing) {
-            System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
-                    "                           💸 PURCHASE A VEHICLE                                    " +
-                    "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+    public static void processSellOrLeaseVehicleRequest() {
+        System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+                "                       📑 SELL OR LEASE A VEHICLE                              " +
+                "\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
 
-            ArrayList<Vehicle> inventory = newDealer.getAllVehicles();
-            displayVehicles(inventory);
+        ArrayList<Vehicle> inventory = newDealer.getAllVehicles();
+        displayVehicles(inventory);
 
-            int vin = Integer.parseInt(getValidatedNumber("Enter VIN of the vehicle you want to purchase: "));
+        int vin = Integer.parseInt(getValidatedNumber("Enter VIN of the vehicle you want to sell or lease: "));
 
-            Vehicle vehicleToPurchase = null;
-            for (Vehicle v : inventory) {
-                if (v.getVin() == vin) {
-                    vehicleToPurchase = v;
-                    break;
-                }
-            }
-
-            if (vehicleToPurchase != null) {
-                System.out.println("\nVehicle selected:");
-                System.out.println(vehicleToPurchase);
-                String confirm = getValidString("Is this the vehicle you want to purchase? (Y/N): ");
-                if (confirm.equalsIgnoreCase("y")) {
-                    System.out.println("\nPlease enter buyer information:");
-                    String name = capitalizeWords(getValidString("Name: "));
-                    String phone = getValidatedNumber("Phone Number: ");
-                    String email = getValidString("Email: ");
-                    String cardNumber = getValidatedNumber("Card Number: ");
-                    String expiration = getValidString("Expiration Date (MM/YY): ");
-                    String secCode = getValidatedNumber("Security Code: ");
-
-                    String maskedCard = "**** **** **** " + cardNumber.substring(cardNumber.length() - 4);
-
-                    // Tax calculation
-                    double basePrice = vehicleToPurchase.getPrice();
-                    double taxRate = 0.08; // 8% tax
-                    double taxAmount = basePrice * taxRate;
-                    double totalPrice = basePrice + taxAmount;
-
-                    // Time of purchase
-                    LocalDateTime now = LocalDateTime.now();
-                    String formattedTime = now.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-
-                    // Complete the purchase
-                    newDealer.removeVehicle(vehicleToPurchase);
-                    new DealershipFileManager().saveDealership(newDealer, fileName);
-                    timer(700);
-
-                    System.out.println("\n|==================== RECEIPT ====================|");
-                    System.out.println("| Date & Time: " + formattedTime);
-                    System.out.println("| Buyer: " + name );
-                    System.out.println("| Phone: " + phone );
-                    System.out.println("| Email: " + email);
-                    System.out.println("| Card: " + maskedCard );
-                    System.out.println("| -----------------------------------------------|");
-                    System.out.println("| Purchased Vehicle:");
-                    System.out.println(vehicleToPurchase);
-                    System.out.println("| Price: $" + String.format("%.2f", basePrice));
-                    System.out.println("| Tax (8%): $" + String.format("%.2f", taxAmount));
-                    System.out.println("| Total: $" + String.format("%.2f", totalPrice));
-                    System.out.println("|===============================================|\n");
-                } else {
-                    System.out.println("Purchase canceled.");
-                }
-            } else {
-                System.out.println("Vehicle with that VIN not found.");
-            }
-
-            System.out.println("-----------------------------------------------------------------------------------\n");
-            String again = getValidString("Would you like to purchase another vehicle? (Y/N): ");
-            if (!again.equalsIgnoreCase("y")) {
-                purchasing = false;
+        Vehicle vehicleToProcess = null;
+        for (Vehicle v : inventory) {
+            if (v.getVin() == vin) {
+                vehicleToProcess = v;
+                break;
             }
         }
+
+        if (vehicleToProcess == null) {
+            System.out.println("Vehicle not found.");
+            return;
+        }
+
+        System.out.println("\nPlease enter customer information:");
+        String name = capitalizeWords(getValidString("Name: "));
+        String email = getValidString("Email: ");
+
+        String contractDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+
+        String contractType = getValidString("Is this a SALE or LEASE? (Type SALE/LEASE): ").toUpperCase();
+        Contract contract = null;
+
+        if (contractType.equals("SALE")) {
+            String financeAnswer = getValidString("Do they want to finance the vehicle? (yes/no): ");
+            boolean finance = financeAnswer.equalsIgnoreCase("yes");
+            contract = new SalesContract(contractDate, name, email, vehicleToProcess, finance);
+//    public SalesContract(String date, String customerName, String customerEmail, Vehicle vehicleSold, boolean whetherToFinance, int processingFee) {
+        } else if (contractType.equals("LEASE")) {
+            int currentYear = LocalDate.now().getYear();
+            if (vehicleToProcess.getYear() < currentYear - 3) {
+                System.out.println("\nCannot lease vehicles over 3 years old.");
+                return;
+            }
+            contract = new LeaseContract(contractDate, name, email, vehicleToProcess);
+        } else {
+            System.out.println("Invalid contract type.");
+            return;
+        }
+
+        // Save contract and remove vehicle
+        new ContractFileManager().saveContract(contract, getDealerFileBaseName());
+        newDealer.removeVehicle(vehicleToProcess);
+        new DealershipFileManager().saveDealership(newDealer, fileName);
+
+        System.out.println("\nContract completed and vehicle removed from inventory.");
     }
+
 
     private static void displayVehicles(ArrayList<Vehicle> vehicleList) {
         timer(700);
@@ -472,5 +452,10 @@ public class UserInterface {
         }catch (InterruptedException e){
             throw new RuntimeException(e);
         }
+
+
+    }
+    public static String getDealerFileBaseName() {
+        return fileName.replace(".csv", "");
     }
 }

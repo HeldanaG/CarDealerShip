@@ -1,9 +1,0 @@
----- Dealership Information ----
-Name | Address | Phone
-Hunter|1112223333|123 Main St
------------------------------------------------------------------------------------
-
----- Vehicle Inventory ----
-VIN      | Year   | Make       | Model        | Type         | Color      | Odometer | Price      
------------------------------------------------------------------------------------
-0        | 2021   | Ford       | Explorer     | Sedan        | Black      | 90000    | $15000.00  
