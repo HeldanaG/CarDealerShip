@@ -1,12 +1,11 @@
 ---- Dealership Information ----
 Name | Address | Phone
-Heldana|2143045870|1505 Elm Street
+Heldana|1505 Elm Street|2143045870
 -----------------------------------------------------------------------------------
 
 ---- Vehicle Inventory ----
 VIN      | Year   | Make       | Model        | Type         | Color      | Odometer | Price      
 -----------------------------------------------------------------------------------
-4444     | 2018   | Chevrolet  | Malibu       | Car          | Silver     | 50000    | $11950.00  
-3333     | 2021   | Ford       | Explorer     | SUV          | Blue       | 40000    | $28900.00  
 2222     | 2019   | Toyota     | Camry        | Sedan        | White      | 15000    | $13500.00  
-1111     | 2017   | Honda      | Accord       | Car          | Black      | 11000    | $10000.00  
+3333     | 2021   | Ford       | Explorer     | SUV          | Blue       | 40000    | $28900.00  
+4444     | 2018   | Chevrolet  | Malibu       | Car          | Silver     | 50000    | $11950.00  
