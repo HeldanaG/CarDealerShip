@@ -205,7 +205,30 @@ public class VehicleDao {
         return vehicles;
     }
 
-    // Phase 2 - Add and Remove
+    public Vehicle findByVin(String vin) throws SQLException {
+        String sql = "SELECT * FROM vehicles WHERE VIN = ?";
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, vin);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Vehicle v = new Vehicle();
+                v.setVin(rs.getString("VIN"));
+                v.setYear(rs.getInt("year"));
+                v.setMake(rs.getString("make"));
+                v.setModel(rs.getString("model"));
+                v.setType(rs.getString("type"));
+                v.setColor(rs.getString("color"));
+                v.setOdometer(rs.getInt("odometer"));
+                v.setPrice(rs.getDouble("price"));
+                return v;
+            } else {
+                return null;
+            }
+        }
+    }
 
     public void addVehicle(Vehicle vehicle) throws SQLException {
         String sql = "INSERT INTO vehicles (VIN, year, make, model, type, color, odometer, price) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
