@@ -1,6 +1,6 @@
 package com.pluralsight.dao;
 
-import com.pluralsight.LeaseContract;
+import com.pluralsight.models.LeaseContract;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

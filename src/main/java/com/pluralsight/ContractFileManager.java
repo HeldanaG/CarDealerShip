@@ -1,5 +1,9 @@
 package com.pluralsight;
 
+import com.pluralsight.models.Contract;
+import com.pluralsight.models.LeaseContract;
+import com.pluralsight.models.SalesContract;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;

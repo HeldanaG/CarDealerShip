@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import com.pluralsight.models.*;
+
 import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
