@@ -1,9 +1,11 @@
 package com.pluralsight;
 
+import com.pluralsight.dao.LeaseDao;
+import com.pluralsight.dao.SalesDao;
+import com.pluralsight.dao.VehicleDao;
 import org.apache.commons.dbcp2.BasicDataSource;
 
 public class Program {
-
     public static void main(String[] args) {
 
         if (args.length != 2) {
@@ -15,12 +17,16 @@ public class Program {
         String password = args[1];
 
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setUrl("jdbc:mysql://localhost:3306/northwind");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/cardealership");
         dataSource.setUsername(username);
         dataSource.setPassword(password);
 
-        // Launch the user interface and start the menu
-        UserInterface.display();
-    }
+        VehicleDao vehicleDao = new VehicleDao(dataSource);
+        SalesDao salesDao = new SalesDao(dataSource);
+        LeaseDao leaseDao = new LeaseDao(dataSource);
 
+        UserInterface userInterface = new UserInterface(vehicleDao, salesDao, leaseDao);
+        userInterface.display();
+
+    }
 }

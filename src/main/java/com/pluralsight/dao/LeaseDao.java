@@ -22,7 +22,7 @@ public class LeaseDao {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, leaseContract.getVin());
+            stmt.setString(1, leaseContract.getVehicleSold().getVin());
             stmt.setDate(2, Date.valueOf(leaseContract.getContractDate()));
             stmt.setString(3, leaseContract.getCustomerName());
             stmt.setString(4, leaseContract.getCustomerEmail());

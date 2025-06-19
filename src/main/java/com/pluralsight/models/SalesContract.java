@@ -7,6 +7,7 @@ public class SalesContract extends Contract {
     private double recordingFee;
     private double processingFee;
     private boolean whetherToFinance;
+    private int termMonths;
 
     public SalesContract(Vehicle vehicleSold, LocalDate contractDate, String customerName, String customerEmail,
                          double recordingFee, double processingFee, boolean whetherToFinance) {
@@ -14,12 +15,15 @@ public class SalesContract extends Contract {
         this.recordingFee = recordingFee;
         this.processingFee = processingFee;
         this.whetherToFinance = whetherToFinance;
+        this.termMonths = vehicleSold.getPrice() >= 10000 ? 48 : 24;
+
     }
 
     @Override
     public double getTotalPrice() {
         double tax = vehicleSold.getPrice() * salesTax;
         return vehicleSold.getPrice() + tax + recordingFee + processingFee;
+
     }
 
     @Override
@@ -31,6 +35,10 @@ public class SalesContract extends Contract {
         int months = vehicleSold.getPrice() >= 10000 ? 48 : 24;
 
         return (total * rate / 12) / (1 - Math.pow(1 + rate / 12, -months));
+    }
+
+    public int getTermMonths() {
+        return termMonths;
     }
 
     public double getSalesTax() {

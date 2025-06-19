@@ -5,7 +5,6 @@ import com.pluralsight.dao.*;
 import com.pluralsight.models.*;
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -15,24 +14,31 @@ public class UserInterface {
     private static SalesDao salesDao;
     private static LeaseDao leaseDao;
 
-    public static void display(BasicDataSource dataSource) {
-        vehicleDao = new VehicleDao(dataSource);
-        salesDao = new SalesDao(dataSource);
-        leaseDao = new LeaseDao(dataSource);
+    public UserInterface(VehicleDao vehicleDao, SalesDao salesDao, LeaseDao leaseDao) {
+        this.vehicleDao = vehicleDao;
+        this.salesDao = salesDao;
+        this.leaseDao = leaseDao;
+    }
+    public static void display() {
+
 
         boolean running = true;
         while (running) {
-            System.out.println("\n=== Vehicle Dealership Menu ===");
-            System.out.println("1. Search by price range");
-            System.out.println("2. Search by make/model");
-            System.out.println("3. Search by year range");
-            System.out.println("4. Search by color");
-            System.out.println("5. Search by mileage range");
-            System.out.println("6. Search by type");
-            System.out.println("7. Add vehicle");
-            System.out.println("8. Remove vehicle");
-            System.out.println("9. Sell/Lease vehicle");
-            System.out.println("0. Exit");
+            System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+                    "                🚘   VEHICLE SEARCH & MANAGEMENT MENU   🚘                        \n" +
+                    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+                    " 1  -  Find vehicles by price                                                      \n" +
+                    " 2  -  Find vehicles by make/model                                                 \n" +
+                    " 3  -  Find vehicles by year range                                                 \n" +
+                    " 4  -  Find vehicles by color                                                      \n" +
+                    " 5  -  Find vehicles by mileage                                                    \n" +
+                    " 6  -  Find vehicles by type                                                       \n" +
+                    " 7  -  Add a vehicle                                                               \n" +
+                    " 8  -  Remove a vehicle                                                            \n" +
+                    " 9  -  Sell or Lease a Vehicle                                                     \n" +
+                    " 0  -  Quit                                                                        \n" +
+                    "-----------------------------------------------------------------------------------");
+
 
             String option = ask("Choose option: ");
             switch (option) {
@@ -56,7 +62,10 @@ public class UserInterface {
             double min = Double.parseDouble(ask("Enter minimum price: "));
             double max = Double.parseDouble(ask("Enter maximum price: "));
             List<Vehicle> vehicles = vehicleDao.findByPriceRange(min, max);
+            System.out.println("\nVIN              | Year  | Make       | Model       | Type         | Color      | Odometer | Price");
+            System.out.println("-----------------------------------------------------------------------------------------------");
             vehicles.forEach(System.out::println);
+
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -67,10 +76,13 @@ public class UserInterface {
             String make = ask("Enter make: ");
             String model = ask("Enter model: ");
             List<Vehicle> vehicles = vehicleDao.findByMakeModel(make, model);
+            System.out.println("\nVIN              | Year  | Make       | Model       | Type         | Color      | Odometer | Price");
+            System.out.println("-----------------------------------------------------------------------------------------------");
             vehicles.forEach(System.out::println);
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            System.out.println("Invalid year. Please enter a number.");
         }
+
     }
 
     private static void searchByYear() {
@@ -78,6 +90,8 @@ public class UserInterface {
             int min = Integer.parseInt(ask("Enter min year: "));
             int max = Integer.parseInt(ask("Enter max year: "));
             List<Vehicle> vehicles = vehicleDao.findByYearRange(min, max);
+            System.out.println("\nVIN              | Year  | Make       | Model       | Type         | Color      | Odometer | Price");
+            System.out.println("-----------------------------------------------------------------------------------------------");
             vehicles.forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -88,6 +102,8 @@ public class UserInterface {
         try {
             String color = ask("Enter color: ");
             List<Vehicle> vehicles = vehicleDao.findByColor(color);
+            System.out.println("\nVIN              | Year  | Make       | Model       | Type         | Color      | Odometer | Price");
+            System.out.println("-----------------------------------------------------------------------------------------------");
             vehicles.forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -99,6 +115,8 @@ public class UserInterface {
             int min = Integer.parseInt(ask("Enter min mileage: "));
             int max = Integer.parseInt(ask("Enter max mileage: "));
             List<Vehicle> vehicles = vehicleDao.findByMileageRange(min, max);
+            System.out.println("\nVIN              | Year  | Make       | Model       | Type         | Color      | Odometer | Price");
+            System.out.println("-----------------------------------------------------------------------------------------------");
             vehicles.forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -109,6 +127,8 @@ public class UserInterface {
         try {
             String type = ask("Enter type: ");
             List<Vehicle> vehicles = vehicleDao.findByType(type);
+            System.out.println("\nVIN              | Year  | Make       | Model       | Type         | Color      | Odometer | Price");
+            System.out.println("-----------------------------------------------------------------------------------------------");
             vehicles.forEach(System.out::println);
         } catch (Exception e) {
             System.out.println("Error: " + e.getMessage());
@@ -117,7 +137,7 @@ public class UserInterface {
 
     private static void addVehicle() {
         try {
-            int vin = Integer.parseInt(ask("VIN: "));
+            String vin = ask("VIN: ");
             int year = Integer.parseInt(ask("Year: "));
             String make = ask("Make: ");
             String model = ask("Model: ");

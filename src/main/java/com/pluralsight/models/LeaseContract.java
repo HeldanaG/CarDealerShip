@@ -24,6 +24,7 @@ public class LeaseContract extends Contract {
         double interest = (vehicleSold.getPrice() + expectedEndingValue) * 0.04 / 2;
         return depreciation + interest / 36.0;
     }
+    public int getTermMonths() { return 36;}
 
     public double getLeaseFee() {
         return leaseFee;

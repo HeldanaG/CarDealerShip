@@ -1,33 +1,36 @@
 package com.pluralsight.models;
 
 public class Vehicle {
-    private int vin;
+    private String vin;
     private int year;
     private String make;
     private String model;
-    private String vehicleType;
+    private String Type;
     private String color;
     private int odometer;
     private double price;
 
+    public Vehicle() {
+    }
+
     // This class represents one vehicle and its data in the dealership's inventory.
-    public Vehicle(int vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
+    public Vehicle(String vin, int year, String make, String model, String Type, String color, int odometer, double price) {
         this.vin = vin;
         this.year = year;
         this.make = make;
         this.model = model;
-        this.vehicleType = vehicleType;
+        this.Type = Type;
         this.color = color;
         this.odometer = odometer;
         this.price = price;
     }
 
 
-    public int getVin() {
+    public String getVin() {
         return vin;
     }
 
-    public void setVin(int vin) {
+    public void setVin(String vin) {
         this.vin = vin;
     }
 
@@ -55,12 +58,12 @@ public class Vehicle {
         this.color = color;
     }
 
-    public String getVehicleType() {
-        return vehicleType;
+    public String getType() {
+        return Type;
     }
 
-    public void setVehicleType(String vehicleType) {
-        this.vehicleType = vehicleType;
+    public void setType(String Type) {
+        this.Type = Type;
     }
 
     public String getModel() {
@@ -89,8 +92,11 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return String.format("%-8d | %-6d | %-10s | %-12s | %-12s | %-10s | %-8d | $%-10.2f",
-                vin, year, make, model, vehicleType, color, odometer, price);
+        return String.format(
+                "%-17s | %-6d | %-10s | %-12s | %-12s | %-10s | %-8d | $%-10.2f",
+                vin, year, make, model, Type, color, odometer, price
+        );
     }
+
 
 }
